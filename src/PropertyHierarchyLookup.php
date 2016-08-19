@@ -13,6 +13,8 @@ use SMW\Store;
  */
 class PropertyHierarchyLookup {
 
+	const POOLCACHE_ID = 'property.hierarchy.lookup';
+
 	/**
 	 * @var Store
 	 */
@@ -150,7 +152,7 @@ class PropertyHierarchyLookup {
 		$key = 'f#' . $id . '#' . $key;
 
 		if ( $this->cache->contains( $key ) ) {
-			return unserialize( $this->cache->fetch( $key ) );
+			return $this->cache->fetch( $key );
 		}
 
 		$requestOptions = new RequestOptions();
@@ -163,7 +165,7 @@ class PropertyHierarchyLookup {
 
 		$this->cache->save(
 			$key,
-			serialize( $result )
+			$result
 		);
 
 		wfDebugLog( 'smw', __METHOD__ . " {$id} and " . $subject->getDBKey() . "\n" );
